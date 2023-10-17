@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Poppins:wght@300&display=swap");
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  background-position: center;
+  background-size: cover;
+  /* font-family: "Libre Baskerville", serif; */
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(136, 136, 136, 0.281);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.colour {
+  color: #020161f1;
+}
