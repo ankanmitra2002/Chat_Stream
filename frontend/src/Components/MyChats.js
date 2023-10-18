@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ChatState } from "../context/chatProvider";
-import { Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Stack,
+  Text,
+  useMediaQuery,
+  useToast,
+} from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import ChatLoading from "./ChatLoading";
 import { getSender } from "../config/ChatLogics";
@@ -10,7 +17,8 @@ const MyChats = () => {
   const [loggedUser, setLoggedUser] = useState();
 
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
-
+  const [isVerySmallScreen] = useMediaQuery("(max-width: 300px)");
+  const [isSmallScreen] = useMediaQuery("(max-width: 405px)");
   const toast = useToast();
   const fetchChats = async () => {
     // console.log(user._id);
@@ -53,23 +61,27 @@ const MyChats = () => {
     >
       <Box
         pb={3}
-        px={3}
-        fontSize={{ base: "28px", md: "30px" }}
+        px={2}
+        fontSize={
+          isSmallScreen ? (isVerySmallScreen ? "15px" : "20px") : "30px"
+        }
         display={"flex"}
         w="100%"
         justifyContent="space-between"
         alignItems="center"
       >
         My Chats
+        {/* <GroupChatModal> */}
         <Button
           display={"flex"}
-          fontSize={{ base: "17px", md: "10px", lg: "17px" }}
+          fontSize={isVerySmallScreen ? "12px" : "17px"}
           rightIcon={<AddIcon />}
           bg={"green.600"}
           color={"white"}
         >
           New Group
         </Button>
+        {/* </GroupChatModal> */}
       </Box>
       <Box
         d="flex"
