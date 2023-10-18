@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import colors from "colors";
 import userRoutes from "./routes/userRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 const webapp = express();
@@ -17,6 +18,7 @@ webapp.get("/", (req, res) => {
 });
 webapp.use("/api/user", userRoutes);
 webapp.use("/api/chat", chatRoutes);
+webapp.use("/api/message", messageRoutes);
 webapp.use(notFound);
 webapp.use(errorHandler);
 // webapp.get("/api/chat", (req, res) => {
