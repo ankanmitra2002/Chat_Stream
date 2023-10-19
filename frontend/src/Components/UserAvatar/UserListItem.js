@@ -14,7 +14,7 @@ const UserListItem = ({ user, handleFunction }) => {
         color: "white",
       }}
       w="100%"
-      d="flex"
+      display="flex"
       alignItems="center"
       color="black"
       px={3}
@@ -27,7 +27,7 @@ const UserListItem = ({ user, handleFunction }) => {
         size="sm"
         cursor="pointer"
         name={user.name}
-        src={user.pic}
+        src={user.photo}
       />
       <Box>
         <Text>{user.name}</Text>

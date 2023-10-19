@@ -10,8 +10,9 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
-import ChatLoading from "./ChatLoading";
-import { getSender } from "../config/ChatLogics";
+import ChatLoading from "./ChatLoading.js";
+import { getSender } from "../config/ChatLogics.js";
+import GroupChatModal from "./GroupChatModal.js";
 
 const MyChats = () => {
   const [loggedUser, setLoggedUser] = useState();
@@ -19,6 +20,10 @@ const MyChats = () => {
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
   const [isVerySmallScreen] = useMediaQuery("(max-width: 300px)");
   const [isSmallScreen] = useMediaQuery("(max-width: 405px)");
+  const [isMediumScreen] = useMediaQuery(
+    "(min-width: 700px) and (max-width:900px)"
+  );
+
   const toast = useToast();
   const fetchChats = async () => {
     // console.log(user._id);
@@ -34,7 +39,7 @@ const MyChats = () => {
       setChats(data);
     } catch (error) {
       toast({
-        title: "Error Occured!",
+        title: "Error Occurred",
         description: "Failed to Load the chats",
         status: "error",
         duration: 2000,
@@ -55,7 +60,8 @@ const MyChats = () => {
       alignItems="center"
       p={3}
       bg="white"
-      w={{ base: "100%", md: "30%" }}
+      w={{ base: "100%", md: isMediumScreen ? "40%" : "30%" }}
+      // w={isSmallScreen ? "100%" : "50%"}
       borderRadius="lg"
       borderWidth="1px"
     >
@@ -71,17 +77,17 @@ const MyChats = () => {
         alignItems="center"
       >
         My Chats
-        {/* <GroupChatModal> */}
-        <Button
-          display={"flex"}
-          fontSize={isVerySmallScreen ? "12px" : "17px"}
-          rightIcon={<AddIcon />}
-          bg={"green.600"}
-          color={"white"}
-        >
-          New Group
-        </Button>
-        {/* </GroupChatModal> */}
+        <GroupChatModal>
+          <Button
+            display={"flex"}
+            fontSize={isVerySmallScreen ? "12px" : "15px"}
+            rightIcon={<AddIcon />}
+            bg={"green.600"}
+            color={"white"}
+          >
+            New Group
+          </Button>
+        </GroupChatModal>
       </Box>
       <Box
         d="flex"
