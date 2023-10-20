@@ -29,7 +29,7 @@ function App() {
   //   };
   // }, [vantaEffect]);
   return (
-    <div className="App" style={{ backgroundColor: "#929385f1" }}>
+    <div className="App" style={{ backgroundColor: "#d4cccc" }}>
       <Route path="/" component={HomePage} exact />
       <Route path="/chat" component={ChatPage} />
     </div>

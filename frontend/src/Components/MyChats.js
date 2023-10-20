@@ -14,14 +14,14 @@ import ChatLoading from "./ChatLoading.js";
 import { getSender } from "../config/ChatLogics.js";
 import GroupChatModal from "./GroupChatModal.js";
 
-const MyChats = () => {
+const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
 
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
   const [isVerySmallScreen] = useMediaQuery("(max-width: 300px)");
   const [isSmallScreen] = useMediaQuery("(max-width: 405px)");
   const [isMediumScreen] = useMediaQuery(
-    "(min-width: 700px) and (max-width:900px)"
+    "(min-width: 700px) and (max-width:980px)"
   );
 
   const toast = useToast();
@@ -51,7 +51,7 @@ const MyChats = () => {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
-  }, []);
+  }, [fetchAgain]);
 
   return (
     <Box
@@ -60,16 +60,23 @@ const MyChats = () => {
       alignItems="center"
       p={3}
       bg="white"
-      w={{ base: "100%", md: isMediumScreen ? "40%" : "30%" }}
+      w={{ base: "100%", md: isMediumScreen ? "40%" : "31%" }}
       // w={isSmallScreen ? "100%" : "50%"}
       borderRadius="lg"
-      borderWidth="1px"
+      borderWidth={"2px"}
+      boxShadow=" 0 0 10px #020161f1"
     >
       <Box
         pb={3}
         px={2}
         fontSize={
-          isSmallScreen ? (isVerySmallScreen ? "15px" : "20px") : "30px"
+          isSmallScreen
+            ? isVerySmallScreen
+              ? "15px"
+              : "20px"
+            : isMediumScreen
+            ? "25px"
+            : "30px"
         }
         display={"flex"}
         w="100%"

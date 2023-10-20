@@ -155,7 +155,10 @@ const SideDrawer = () => {
         bg="white"
         w="100%"
         p="4px 0px 4px 0px"
-
+        borderRadius="lg"
+        borderWidth={"2px"}
+        mt={2}
+        boxShadow=" 0 0 5px #020161f1"
         // borderRadius={"md"}
       >
         <Box display="flex">
