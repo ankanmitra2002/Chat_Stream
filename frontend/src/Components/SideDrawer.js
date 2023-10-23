@@ -9,6 +9,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  IconButton,
   Input,
   Menu,
   MenuButton,
@@ -22,6 +23,7 @@ import {
   useMediaQuery,
   useToast,
 } from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
@@ -46,16 +48,20 @@ const SideDrawer = () => {
     localStorage.removeItem("userInfo");
     history.push("/");
   };
-  const handleSearch = async () => {
+  const handleSearch = async (search) => {
     if (!search) {
-      toast({
-        title: "Please Enter something in search",
-        status: "warning",
-        duration: 2000,
-        isClosable: true,
-        position: "top-left",
-      });
-      return;
+      // toast({
+      //   title: "Please Enter something in search",
+      //   status: "warning",
+      //   duration: 2000,
+      //   isClosable: true,
+      //   position: "top-left",
+      // });
+      // return;
+      if (!search) {
+        setSearchResult([]);
+        return;
+      }
     }
 
     try {
@@ -110,40 +116,40 @@ const SideDrawer = () => {
       });
     }
   };
-  const fetchSearchResults = async (input) => {
-    if (!input) {
-      setSearchResult([]);
-      return;
-    }
+  // const fetchSearchResults = async (input) => {
+  //   if (!input) {
+  //     setSearchResult([]);
+  //     return;
+  //   }
 
-    try {
-      setLoading(true);
+  //   try {
+  //     setLoading(true);
 
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
+  //     const config = {
+  //       headers: {
+  //         Authorization: `Bearer ${user.token}`,
+  //       },
+  //     };
 
-      const { data } = await axios.get(`/api/user?search=${input}`, config);
+  //     const { data } = await axios.get(`/api/user?search=${input}`, config);
 
-      setSearchResult(data);
-      setLoading(false);
-    } catch (error) {
-      toast({
-        title: "Error Occurred!",
-        description: "Failed to Load the Search Results",
-        status: "error",
-        duration: 2000,
-        isClosable: true,
-        position: "bottom-left",
-      });
-    }
-  };
+  //     setSearchResult(data);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     toast({
+  //       title: "Error Occurred!",
+  //       description: "Failed to Load the Search Results",
+  //       status: "error",
+  //       duration: 2000,
+  //       isClosable: true,
+  //       position: "bottom-left",
+  //     });
+  //   }
+  // };
 
   // Update the search results as you type in the input field
   useEffect(() => {
-    fetchSearchResults(search);
+    handleSearch(search);
   }, [search]);
 
   return (
@@ -153,7 +159,9 @@ const SideDrawer = () => {
         justifyContent="space-between"
         alignItems="center"
         bg="white"
-        w="100%"
+        w="98.9%"
+        ml={"10px"}
+        mr={"10px"}
         p="4px 0px 4px 0px"
         borderRadius="lg"
         borderWidth={"2px"}
@@ -237,7 +245,23 @@ const SideDrawer = () => {
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
+          <DrawerHeader
+            borderBottomWidth="1px"
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent="flex-start" // Align content to the left within the button
+          >
+            <IconButton
+              icon={<ArrowBackIcon boxSize={6} ml={0} />}
+              onClick={onClose}
+              bg={"transparent"}
+              variant={"ghost"}
+              mr={1}
+              mt={0}
+              color="blue.700"
+            />
+            Search Users
+          </DrawerHeader>
           <DrawerBody>
             <Box
               display="flex"

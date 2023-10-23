@@ -65,6 +65,7 @@ const MyChats = ({ fetchAgain }) => {
       borderRadius="lg"
       borderWidth={"2px"}
       boxShadow=" 0 0 10px #020161f1"
+      h={"100%"}
     >
       <Box
         pb={3}
@@ -97,17 +98,18 @@ const MyChats = ({ fetchAgain }) => {
         </GroupChatModal>
       </Box>
       <Box
-        d="flex"
+        display="flex"
         flexDir="column"
         p={3}
         bg="#F8F8F8"
         w="100%"
         h="100%"
         borderRadius="lg"
-        overflowY="hidden"
+        // overflowY="hidden"
+        overflowY="scroll"
       >
         {chats ? (
-          <Stack overflowY="scroll">
+          <Stack>
             {chats.map((chat) => (
               <Box
                 onClick={() => setSelectedChat(chat)}

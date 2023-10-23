@@ -15,7 +15,7 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChatState } from "../context/chatProvider.js";
 import UserListItem from "./UserAvatar/UserListItem.js";
 import UserBadgeItem from "./UserAvatar/UserBadgeItem.js";
@@ -35,7 +35,7 @@ const GroupChatModal = ({ children }) => {
   const handleGroup = (userToAdd) => {
     if (selectedUsers.includes(userToAdd)) {
       toast({
-        title: "User already added",
+        title: "User is already added",
         status: "warning",
         duration: 2000,
         isClosable: true,
@@ -47,9 +47,10 @@ const GroupChatModal = ({ children }) => {
     setSelectedUsers([...selectedUsers, userToAdd]);
   };
 
-  const handleSearch = async (query) => {
-    setSearch(query);
-    if (!query) {
+  const handleSearch = async (search) => {
+    setSearch(search);
+    if (!search) {
+      setSearchResult([]);
       return;
     }
 
@@ -69,7 +70,7 @@ const GroupChatModal = ({ children }) => {
         title: "Error Occured!",
         description: "Failed to Load the Search Results",
         status: "error",
-        duration: 5000,
+        duration: 2000,
         isClosable: true,
         position: "bottom-left",
       });
@@ -126,7 +127,9 @@ const GroupChatModal = ({ children }) => {
       });
     }
   };
-
+  useEffect(() => {
+    handleSearch(search);
+  }, [search]);
   return (
     <>
       <span onClick={onOpen}>{children}</span>
@@ -177,15 +180,19 @@ const GroupChatModal = ({ children }) => {
               // <ChatLoading />
               <div>Loading...</div>
             ) : (
-              searchResult
-                ?.slice(0, 4)
-                .map((user) => (
+              <Box
+                w="100%"
+                maxHeight="150px" // Set a maximum height for the container
+                overflowY="auto" // Add a scrollbar when content exceeds the maximum height
+              >
+                {searchResult?.slice(0, 4).map((user) => (
                   <UserListItem
                     key={user._id}
                     user={user}
                     handleFunction={() => handleGroup(user)}
                   />
-                ))
+                ))}
+              </Box>
             )}
           </ModalBody>
           <ModalFooter>

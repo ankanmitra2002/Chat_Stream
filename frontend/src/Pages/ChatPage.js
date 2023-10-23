@@ -21,13 +21,13 @@ const ChatPage = () => {
   }, [user]);
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", overflowY: "hidden" }}>
       {user && <SideDrawer></SideDrawer>}
       <Box
         display={"flex"}
         justifyContent={"space-between"}
         width={"100%"}
-        height={"100%"}
+        height={"92%"}
         // bg={"black"}
         p="10px"
       >

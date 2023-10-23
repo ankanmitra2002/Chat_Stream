@@ -9,17 +9,28 @@
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
+  width: 10px;
+  margin-left: 1px;
+  height: 100%;
+  border-radius: 10px;
+  background-color: #eff6f9db;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(136, 136, 136, 0.281);
+  background: #09101824;
+  border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #d4cccc;
+  background: #0101138f;
+  border-radius: 10px;
 }
-.colour {
+::-webkit-scrollbar-track {
+  background: transparent;
+  /* Make the track transparent */
+  border-radius: 10px; /* Add border radius to the track */
+}
+*/ .colour {
   color: #ed8b0c;
 }

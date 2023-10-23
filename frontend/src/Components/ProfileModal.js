@@ -27,6 +27,7 @@ const ProfileModal = ({ user, children }) => {
         <IconButton
           display={{ base: "flex" }}
           icon={<ViewIcon />}
+          bg={"transparent"}
           onClick={onOpen}
         />
       )}
