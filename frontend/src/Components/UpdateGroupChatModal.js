@@ -220,8 +220,15 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
 
       <Modal onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader fontSize="35px" display="flex" justifyContent="center">
+        <ModalContent
+          w={isSmallScreen ? (isVerySmallScreen ? "90%" : "70%") : "50%"}
+        >
+          <ModalHeader
+            display="flex"
+            justifyContent="center"
+            fontSize={isSmallScreen ? "15px" : "30px"}
+            fontWeight="bold"
+          >
             {selectedChat.chatName}
           </ModalHeader>
 
@@ -239,19 +246,24 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
             </Box>
             <FormControl display="flex">
               <Input
-                placeholder="Chat Name"
+                placeholder="Give new name"
                 mb={3}
                 value={groupChatName}
                 onChange={(e) => setGroupChatName(e.target.value)}
+                borderColor={"black"}
               />
               <Button
                 variant="solid"
-                colorScheme="teal"
+                bg={"#b601b37d"}
+                color={"white"}
                 ml={1}
                 isLoading={renameloading}
                 onClick={handleRename}
+                borderColor="black"
+                // fontSize={isSmallScreen ? "10px" : "15px"}
+                // width={isSmallScreen ? "10%" : "20%"}
               >
-                Update
+                Rename
               </Button>
             </FormControl>
             <FormControl>
@@ -259,6 +271,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
                 placeholder="Add User to group"
                 mb={1}
                 onChange={(e) => handleSearch(e.target.value)}
+                borderColor="black"
               />
             </FormControl>
 
@@ -281,7 +294,14 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button onClick={() => handleRemove(user)} colorScheme="red">
+            <Button
+              onClick={() => handleRemove(user)}
+              colorScheme="red"
+              mt={0}
+              // fontSize={isSmallScreen ? "10px" : "15px"}
+              // fontSize={"auto"}
+              // width={isSmallScreen ? "10%" : "20%"}
+            >
               Leave Group
             </Button>
           </ModalFooter>
