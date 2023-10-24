@@ -11,7 +11,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { AttachmentIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
@@ -22,6 +22,15 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const history = useHistory();
+  const [shouldRefresh, setShouldRefresh] = useState(false);
+  useEffect(() => {
+    if (shouldRefresh) {
+      // Refresh the page
+      window.location.reload();
+      // Set the state to prevent further refreshes
+      setShouldRefresh(false);
+    }
+  }, [shouldRefresh]);
   const handleClick = () => setShow(!show);
   const submitHandler = async () => {
     setLoading(true);
@@ -58,10 +67,18 @@ const Login = () => {
         position: "bottom",
       });
 
-      // setLoading(false);
-      // history.push("/chat");
+      // // setLoading(false);
+      // // history.push("/chat");
+      // setTimeout(() => {
+      //   setLoading(false);
+      //   history.push("/chat");
+      // }, 1000); // 1000ms delay (1 second) as an example
       setTimeout(() => {
         setLoading(false);
+        // Refresh the page
+
+        // Redirect to the chat page
+        setShouldRefresh(true);
         history.push("/chat");
       }, 1000); // 1000ms delay (1 second) as an example
     } catch (error) {

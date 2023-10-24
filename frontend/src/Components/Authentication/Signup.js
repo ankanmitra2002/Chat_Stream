@@ -13,7 +13,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { AttachmentIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 const Signup = () => {
@@ -28,6 +28,15 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const history = useHistory();
+  const [shouldRefresh, setShouldRefresh] = useState(false);
+  useEffect(() => {
+    if (shouldRefresh) {
+      // Refresh the page
+      window.location.reload();
+      // Set the state to prevent further refreshes
+      setShouldRefresh(false);
+    }
+  }, [shouldRefresh]);
   const handleClick = () => setShow(!show);
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -177,8 +186,13 @@ const Signup = () => {
         position: "bottom",
       });
       localStorage.setItem("userInfo", JSON.stringify(data));
-      setLoading(false);
-      history.push("/chat");
+      // setLoading(false);
+      // history.push("/chat");
+      setTimeout(() => {
+        setLoading(false);
+        setShouldRefresh(true);
+        history.push("/chat");
+      }, 1000); // 1000ms delay (1 second) as an example
     } catch (error) {
       toast({
         title: "Some Error Occurred!",

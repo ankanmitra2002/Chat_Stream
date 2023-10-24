@@ -16,6 +16,7 @@ import {
   IconButton,
   Spinner,
   useMediaQuery,
+  Text,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -33,8 +34,10 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   const toast = useToast();
 
   const { selectedChat, setSelectedChat, user } = ChatState();
-  const [isSmallScreen] = useMediaQuery("(max-width: 500px)");
+  const [isSmallScreen] = useMediaQuery("(max-width: 600px)");
   const [isVerySmallScreen] = useMediaQuery("(max-width: 370px)");
+
+  const isAdmin = selectedChat.groupAdmin?._id === user._id;
 
   const handleSearch = async (search) => {
     setSearch(search);
@@ -108,7 +111,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   const handleAddUser = async (user1) => {
     if (selectedChat.users.find((u) => u._id === user1._id)) {
       toast({
-        title: "User Already in group!",
+        title: "User Already in group",
         status: "error",
         duration: 2000,
         isClosable: true,
@@ -117,7 +120,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
       return;
     }
 
-    if (selectedChat.groupAdmin._id !== user._id) {
+    if (!isAdmin) {
       toast({
         title: "Only admins can add someone",
         status: "error",
@@ -152,7 +155,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
         title: "Error Occurred",
         description: error.response.data.message,
         status: "error",
-        duration: 5000,
+        duration: 2000,
         isClosable: true,
         position: "bottom",
       });
@@ -162,7 +165,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   };
 
   const handleRemove = async (user1) => {
-    if (selectedChat.groupAdmin._id !== user._id && user1._id !== user._id) {
+    if (!isAdmin && user1._id !== user._id) {
       toast({
         title: "Only admins can remove someone",
         status: "error",
@@ -195,7 +198,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
       setLoading(false);
     } catch (error) {
       toast({
-        title: "Error Occured!",
+        title: "Error Occurred",
         description: error.response.data.message,
         status: "error",
         duration: 2000,
@@ -209,6 +212,50 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     handleSearch(search);
   }, [search]);
+
+  const handleDeleteGroup = async () => {
+    try {
+      setLoading(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const response = await axios.delete(
+        `/api/chat/groupdelete/${selectedChat._id}`,
+        config
+      );
+
+      if (response.status === 200) {
+        // The chat has been deleted successfully
+        // You can handle any necessary actions here, such as updating the UI.
+        toast({
+          title: "Group deleted successfully",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+          position: "bottom",
+        });
+        onClose();
+        setSelectedChat("");
+        setFetchAgain(!fetchAgain);
+        setLoading(false);
+      }
+    } catch (error) {
+      // Handle any errors that occur during the deletion process
+      toast({
+        title: "Failed to delete group",
+        description: error.response.data.message,
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <IconButton
@@ -247,7 +294,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
             <FormControl display="flex">
               <Input
                 placeholder="Give new name"
-                mb={3}
+                mb={2}
                 value={groupChatName}
                 onChange={(e) => setGroupChatName(e.target.value)}
                 borderColor={"black"}
@@ -269,7 +316,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
             <FormControl>
               <Input
                 placeholder="Add User to group"
-                mb={1}
+                // mb={1}
                 onChange={(e) => handleSearch(e.target.value)}
                 borderColor="black"
               />
@@ -293,17 +340,33 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
               </Box>
             )}
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter display={"flex"} justifyContent={"space-between"}>
+            {isAdmin && (
+              <Text fontSize="20px" color="#38B2AC" mr={1}>
+                Admin
+              </Text>
+            )}
             <Button
               onClick={() => handleRemove(user)}
               colorScheme="red"
-              mt={0}
-              // fontSize={isSmallScreen ? "10px" : "15px"}
+              mr={1}
+              fontSize={isSmallScreen ? "12px" : "17px"}
               // fontSize={"auto"}
               // width={isSmallScreen ? "10%" : "20%"}
             >
               Leave Group
             </Button>
+            {isAdmin && (
+              <>
+                <Button
+                  colorScheme="red"
+                  onClick={handleDeleteGroup}
+                  fontSize={isSmallScreen ? "12px" : "17px"}
+                >
+                  Delete Group
+                </Button>
+              </>
+            )}
           </ModalFooter>
         </ModalContent>
       </Modal>

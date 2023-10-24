@@ -164,6 +164,27 @@ const addToGroup = asyncHandler(async (req, res) => {
     res.json(added);
   }
 });
+const deleteGroupChat = asyncHandler(async (req, res) => {
+  const chatId = req.params.chatId;
+
+  // Check if the requester is an admin of the group chat
+  const chat = await Chat.findById(chatId);
+
+  if (!chat) {
+    return res.status(404).json({ message: "Chat not found" });
+  }
+
+  if (chat.isGroupChat && chat.groupAdmin.equals(req.user._id)) {
+    // If the chat is a group chat and the requester is the admin
+    // Delete the chat
+    await Chat.findByIdAndRemove(chatId);
+
+    res.status(200).json({ message: "Group chat deleted successfully" });
+  } else {
+    res.status(403).json({ message: "Permission denied" });
+  }
+});
+
 export {
   accessChat,
   fetchChats,
@@ -171,4 +192,5 @@ export {
   renameGroup,
   removeFromGroup,
   addToGroup,
+  deleteGroupChat,
 };
