@@ -38,7 +38,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const matches = text.match(newlineRegex);
     return matches ? matches.length : 0;
   }
-  const { selectedChat, setSelectedChat, user } = ChatState();
+  const { user, selectedChat, setSelectedChat, notification, setNotification } =
+    ChatState();
   const handleSpeechResult = (result) => {
     setNewMessage(result);
   };
@@ -125,17 +126,17 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
     selectedChatCompare = selectedChat;
   }, [selectedChat]);
-
+  // console.log(notification, "--------------");
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved) => {
       if (
         !selectedChatCompare || // if chat is not selected or doesn't match current chat
         selectedChatCompare._id !== newMessageRecieved.chat._id
       ) {
-        // if (!notification.includes(newMessageRecieved)) {
-        //   setNotification([newMessageRecieved, ...notification]);
-        //   setFetchAgain(!fetchAgain);
-        // }
+        if (!notification.includes(newMessageRecieved)) {
+          setNotification([newMessageRecieved, ...notification]);
+          setFetchAgain(!fetchAgain);
+        }
       } else {
         setMessages([...messages, newMessageRecieved]);
       }
@@ -240,7 +241,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             >
               <Textarea
                 bg="white"
-                placeholder="Enter a message.."
+                placeholder="Message.."
                 value={newMessage}
                 onChange={typingHandler}
                 borderRadius={"20px"}
