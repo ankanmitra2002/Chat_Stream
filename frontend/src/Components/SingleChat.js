@@ -1,13 +1,21 @@
 import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
-import "./styles.css";
-import { Button, IconButton, Spinner, useToast } from "@chakra-ui/react";
+import {
+  Button,
+  IconButton,
+  Spinner,
+  Textarea,
+  useToast,
+} from "@chakra-ui/react";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import ProfileModal from "./ProfileModal.js";
+import "./styles.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 // import Lottie from "react-lottie";
 // import animationData from "../animations/typing.json";
 
@@ -15,6 +23,7 @@ import ProfileModal from "./ProfileModal.js";
 import UpdateGroupChatModal from "./UpdateGroupChatModal.js";
 import { ChatState } from "../context/chatProvider.js";
 import ScrollableChat from "./ScrollableChat";
+import SpeechToText from "./SpeectToText";
 // const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
 // var socket, selectedChatCompare;
 
@@ -26,7 +35,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
   const toast = useToast();
-
+  function countNewlines(text) {
+    const newlineRegex = /\n/g;
+    const matches = text.match(newlineRegex);
+    return matches ? matches.length : 0;
+  }
   //   const defaultOptions = {
   //     loop: true,
   //     autoplay: true,
@@ -36,7 +49,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   //     },
   //   };
   const { selectedChat, setSelectedChat, user } = ChatState();
-
+  const handleSpeechResult = (result) => {
+    setNewMessage(result);
+  };
   const fetchMessages = async () => {
     if (!selectedChat) return;
 
@@ -71,7 +86,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
   const sendMessage = async (event) => {
-    if (event.key === "Enter" && newMessage) {
+    if (newMessage.trim()) {
       // socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
@@ -80,16 +95,19 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        setNewMessage("");
+        const messageContentWithNewlines = newMessage.replace(/\n/g, "<br>");
+
         const { data } = await axios.post(
           "/api/message",
           {
-            content: newMessage,
+            // content: newMessage,
+            content: messageContentWithNewlines,
             chatId: selectedChat,
           },
           config
         );
         // socket.emit("new message", data);
+        setNewMessage("");
         setMessages([...messages, data]);
       } catch (error) {
         toast({
@@ -227,7 +245,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             )}
 
             <FormControl
-              onKeyDown={sendMessage}
+              // onKeyDown={sendMessage}
               id="first-name"
               isRequired
               display={"flex"}
@@ -245,15 +263,55 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               ) : (
                 <></>
               )} */}
-              <Input
+              {/* <Input
                 // variant="filled"
                 bg="white"
                 placeholder="Enter a message.."
                 value={newMessage}
                 onChange={typingHandler}
                 borderRadius={"20px"}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault(); // Prevent default behavior (sending the message)
+                  }
+                }}
+                // as="textarea" // Render the input as a textarea
+                // rows={3}
+              /> */}
+              <Textarea
+                bg="white"
+                placeholder="Enter a message.."
+                value={newMessage}
+                onChange={typingHandler}
+                borderRadius={"20px"}
+                minHeight="48px" // Adjust the minimum height as needed
+                alignItems={"center"}
+                overflowY={"hidden"}
+                rows={
+                  countNewlines(newMessage) == 0
+                    ? 1
+                    : countNewlines(newMessage) <= 3
+                    ? countNewlines(newMessage)
+                    : 3
+                } // Set the number of rows to 3
+                resize="none"
               />
-              <Button onClick={sendMessage}>send</Button>
+              <SpeechToText onSpeechResult={handleSpeechResult} />
+
+              <Button
+                bg={"#075e54"}
+                onClick={sendMessage}
+                borderRadius={"50%"}
+                p={0}
+                ml={1}
+              >
+                <FontAwesomeIcon
+                  icon={faPaperPlane}
+                  style={{
+                    color: "white",
+                  }}
+                />
+              </Button>
             </FormControl>
           </Box>
         </>

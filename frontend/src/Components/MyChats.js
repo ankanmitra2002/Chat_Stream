@@ -105,8 +105,8 @@ const MyChats = ({ fetchAgain }) => {
         w="100%"
         h="100%"
         borderRadius="lg"
-        // overflowY="hidden"
-        overflowY="scroll"
+        overflowY="hidden"
+        // overflowY="scroll"
       >
         {chats ? (
           <Stack>
@@ -127,11 +127,21 @@ const MyChats = ({ fetchAgain }) => {
                     : chat.chatName}
                 </Text>
                 {chat.latestMessage && (
-                  <Text fontSize="xs">
+                  <Text
+                    fontSize="xs"
+                    whiteSpace="pre-line"
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                  >
                     <b>{chat.latestMessage.sender.name} : </b>
-                    {chat.latestMessage.content.length > 50
+                    {/* {chat.latestMessage.content.length > 50
                       ? chat.latestMessage.content.substring(0, 51) + "..."
-                      : chat.latestMessage.content}
+                      : chat.latestMessage.content} */}
+                    {chat.latestMessage.content
+                      .replace(/<br>/g, "\n")
+                      .split("\n")[0]
+                      .substring(0, 51)}
+                    {chat.latestMessage.content.length > 50 && " ..."}
                   </Text>
                 )}
               </Box>
