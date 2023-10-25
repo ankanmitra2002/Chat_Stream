@@ -21,7 +21,7 @@ const ChatPage = () => {
   }, [user]);
 
   return (
-    <div style={{ width: "100%", overflowY: "hidden" }}>
+    <div style={{ width: "100%", overflowY: "hidden", height: "100vh" }}>
       {user && <SideDrawer></SideDrawer>}
       <Box
         display={"flex"}
@@ -39,25 +39,6 @@ const ChatPage = () => {
           ></ChatBox>
         )}
       </Box>
-      {/* {loading ? (
-        <Spinner size="xl" color="blue.500" thickness="4px" />
-      ) : user ? (
-        <>
-          <SideDrawer />
-          <Box
-            d="flex"
-            justifyContent="space-between"
-            w="100%"
-            h="90vh"
-            p="10px"
-          >
-            <MyChats />
-            <ChatBox />
-          </Box>
-        </>
-      ) : (
-        <Text color="red">User data not available</Text>
-      )} */}
     </div>
   );
 };

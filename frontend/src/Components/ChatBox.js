@@ -22,6 +22,7 @@ const Chatbox = ({ fetchAgain, setFetchAgain }) => {
       borderRadius="lg"
       borderWidth={"2px"}
       boxShadow=" 0 0 10px #020161f1"
+      overflowY={"hidden"}
     >
       <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
     </Box>
