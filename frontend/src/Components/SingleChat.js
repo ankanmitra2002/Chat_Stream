@@ -16,16 +16,14 @@ import ProfileModal from "./ProfileModal.js";
 import "./styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-// import Lottie from "react-lottie";
-// import animationData from "../animations/typing.json";
 
-// import io from "socket.io-client";
+import io from "socket.io-client";
 import UpdateGroupChatModal from "./UpdateGroupChatModal.js";
 import { ChatState } from "../context/chatProvider.js";
 import ScrollableChat from "./ScrollableChat";
 import SpeechToText from "./SpeectToText";
-// const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
-// var socket, selectedChatCompare;
+const ENDPOINT = "http://localhost:1000";
+var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
@@ -40,14 +38,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const matches = text.match(newlineRegex);
     return matches ? matches.length : 0;
   }
-  //   const defaultOptions = {
-  //     loop: true,
-  //     autoplay: true,
-  //     animationData: animationData,
-  //     rendererSettings: {
-  //       preserveAspectRatio: "xMidYMid slice",
-  //     },
-  //   };
   const { selectedChat, setSelectedChat, user } = ChatState();
   const handleSpeechResult = (result) => {
     setNewMessage(result);
@@ -72,7 +62,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setMessages(data);
       setLoading(false);
 
-      // socket.emit("join chat", selectedChat._id);
+      socket.emit("join chat", selectedChat._id);
     } catch (error) {
       toast({
         title: "Error Occurred",
@@ -87,7 +77,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const sendMessage = async (event) => {
     if (newMessage.trim()) {
-      // socket.emit("stop typing", selectedChat._id);
+      socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
           headers: {
@@ -106,7 +96,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-        // socket.emit("new message", data);
+        socket.emit("new message", data);
         setNewMessage("");
         setMessages([...messages, data]);
       } catch (error) {
@@ -122,58 +112,55 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
-  //   useEffect(() => {
-  //     socket = io(ENDPOINT);
-  //     socket.emit("setup", user);
-  //     socket.on("connected", () => setSocketConnected(true));
-  //     socket.on("typing", () => setIsTyping(true));
-  //     socket.on("stop typing", () => setIsTyping(false));
-
-  //     // eslint-disable-next-line
-  //   }, []);
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connected", () => setSocketConnected(true));
+    socket.on("typing", () => setIsTyping(true));
+    socket.on("stop typing", () => setIsTyping(false));
+  }, []);
 
   useEffect(() => {
     fetchMessages();
 
-    // selectedChatCompare = selectedChat;
-    // eslint-disable-next-line
+    selectedChatCompare = selectedChat;
   }, [selectedChat]);
 
-  //   useEffect(() => {
-  //     socket.on("message recieved", (newMessageRecieved) => {
-  //       if (
-  //         !selectedChatCompare || // if chat is not selected or doesn't match current chat
-  //         selectedChatCompare._id !== newMessageRecieved.chat._id
-  //       ) {
-  //         if (!notification.includes(newMessageRecieved)) {
-  //           setNotification([newMessageRecieved, ...notification]);
-  //           setFetchAgain(!fetchAgain);
-  //         }
-  //       } else {
-  //         setMessages([...messages, newMessageRecieved]);
-  //       }
-  //     });
-  //   });
+  useEffect(() => {
+    socket.on("message recieved", (newMessageRecieved) => {
+      if (
+        !selectedChatCompare || // if chat is not selected or doesn't match current chat
+        selectedChatCompare._id !== newMessageRecieved.chat._id
+      ) {
+        // if (!notification.includes(newMessageRecieved)) {
+        //   setNotification([newMessageRecieved, ...notification]);
+        //   setFetchAgain(!fetchAgain);
+        // }
+      } else {
+        setMessages([...messages, newMessageRecieved]);
+      }
+    });
+  });
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
 
-    // if (!socketConnected) return;
+    if (!socketConnected) return;
 
-    // if (!typing) {
-    //   setTyping(true);
-    //   socket.emit("typing", selectedChat._id);
-    // }
-    // let lastTypingTime = new Date().getTime();
-    // var timerLength = 3000;
-    // setTimeout(() => {
-    //   var timeNow = new Date().getTime();
-    //   var timeDiff = timeNow - lastTypingTime;
-    //   if (timeDiff >= timerLength && typing) {
-    //     socket.emit("stop typing", selectedChat._id);
-    //     setTyping(false);
-    //   }
-    // }, timerLength);
+    if (!typing) {
+      setTyping(true);
+      socket.emit("typing", selectedChat._id);
+    }
+    let lastTypingTime = new Date().getTime();
+    var timerLength = 3000;
+    setTimeout(() => {
+      var timeNow = new Date().getTime();
+      var timeDiff = timeNow - lastTypingTime;
+      if (timeDiff >= timerLength && typing) {
+        socket.emit("stop typing", selectedChat._id);
+        setTyping(false);
+      }
+    }, timerLength);
   };
 
   return (
@@ -243,7 +230,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <ScrollableChat messages={messages} />
               </div>
             )}
-
+            {istyping ? <div>typing..</div> : <></>}
             <FormControl
               // onKeyDown={sendMessage}
               id="first-name"
@@ -251,33 +238,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               display={"flex"}
               mt={3}
             >
-              {/* {istyping ? (
-                <div>
-                  <Lottie
-                    options={defaultOptions}
-                    // height={50}
-                    width={70}
-                    style={{ marginBottom: 15, marginLeft: 0 }}
-                  />
-                </div>
-              ) : (
-                <></>
-              )} */}
-              {/* <Input
-                // variant="filled"
-                bg="white"
-                placeholder="Enter a message.."
-                value={newMessage}
-                onChange={typingHandler}
-                borderRadius={"20px"}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault(); // Prevent default behavior (sending the message)
-                  }
-                }}
-                // as="textarea" // Render the input as a textarea
-                // rows={3}
-              /> */}
               <Textarea
                 bg="white"
                 placeholder="Enter a message.."
@@ -293,7 +253,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     : countNewlines(newMessage) <= 3
                     ? countNewlines(newMessage)
                     : 3
-                } // Set the number of rows to 3
+                }
                 resize="none"
               />
               <SpeechToText onSpeechResult={handleSpeechResult} />
