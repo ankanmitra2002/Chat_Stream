@@ -60,7 +60,7 @@ const ProfileModal = ({ user, children }) => {
             />
             <Text
               fontSize={
-                isSmallScreen ? (isVerySmallScreen ? "12px" : "15px") : "20px"
+                isSmallScreen ? (isVerySmallScreen ? "12px" : "15px") : "18px"
               }
               fontWeight="bold"
               // fontSize={{ base: "28px", md: "30px" }}

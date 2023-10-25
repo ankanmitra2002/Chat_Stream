@@ -59,7 +59,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         `/api/message/${selectedChat._id}`,
         config
       );
-      console.log(messages);
+      // console.log(messages);
       setMessages(data);
       setLoading(false);
 
@@ -76,7 +76,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
-  const sendMessage = async (event) => {
+  const sendMessage = async () => {
     if (newMessage.trim()) {
       socket.emit("stop typing", selectedChat._id);
       try {
@@ -100,6 +100,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         socket.emit("new message", data);
         setNewMessage("");
         setMessages([...messages, data]);
+        setFetchAgain(!fetchAgain);
       } catch (error) {
         toast({
           title: "Error Occurred",
@@ -126,7 +127,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
     selectedChatCompare = selectedChat;
   }, [selectedChat]);
-  // console.log(notification, "--------------");
+  console.log(notification, "--------------");
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved) => {
       if (
@@ -139,6 +140,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         }
       } else {
         setMessages([...messages, newMessageRecieved]);
+        setFetchAgain(!fetchAgain);
       }
     });
   });
@@ -249,7 +251,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 alignItems={"center"}
                 overflowY={"hidden"}
                 rows={
-                  countNewlines(newMessage) == 0
+                  countNewlines(newMessage) === 0
                     ? 1
                     : countNewlines(newMessage) <= 3
                     ? countNewlines(newMessage)

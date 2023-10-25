@@ -32,6 +32,8 @@ import ProfileModal from "./ProfileModal.js";
 import { useHistory } from "react-router-dom";
 import ChatLoading from "./ChatLoading.js";
 import UserListItem from "./UserAvatar/UserListItem.js";
+import { getSender } from "../config/ChatLogics.js";
+import "./styles.css";
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -40,7 +42,15 @@ const SideDrawer = () => {
   const [isSmallScreen] = useMediaQuery("(max-width: 576px)");
   const [isVerySmallScreen] = useMediaQuery("(max-width: 405px)");
 
-  const { user, setSelectedChat, chats, setChats } = ChatState();
+  const {
+    user,
+    selectedChat,
+    setSelectedChat,
+    chats,
+    setChats,
+    notification,
+    setNotification,
+  } = ChatState();
   const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
@@ -48,6 +58,11 @@ const SideDrawer = () => {
     localStorage.removeItem("userInfo");
     history.push("/");
   };
+  // const handleMenuItemClick = (notify) => {
+  //   console.log("Clicked on notification:", notify);
+  //   setSelectedChat(notify.chat);
+  //   setNotification(notification.filter((n) => n !== notify));
+  // };
   const handleSearch = async (search) => {
     if (!search) {
       // toast({
@@ -214,10 +229,49 @@ const SideDrawer = () => {
         </Text>
         <div>
           <Menu>
-            <MenuButton p={1} m={1}>
-              <BellIcon boxSize={6} color="blue.700"></BellIcon>
-              {/* <MenuList></MenuList> */}
-            </MenuButton>
+            {({ isOpen }) => (
+              <>
+                <MenuButton
+                  p={1}
+                  m={1}
+                  isActive={isOpen}
+                  as={Button}
+                  style={{ background: "transparent" }}
+                >
+                  <div>
+                    {notification.length > 0 && (
+                      <div className="notification-badge">
+                        <span className="badge">{notification.length}</span>
+                      </div>
+                    )}
+                  </div>
+                  <BellIcon boxSize={6} color={"blue.700"}></BellIcon>
+                </MenuButton>
+                <MenuList pl={2}>
+                  {!notification.length && "No new message"}
+                  {notification.map((notify) => (
+                    <MenuItem
+                      key={notify._id}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setSelectedChat(notify.chat);
+                        console.log("hello");
+                        setNotification(
+                          notification.filter((n) => n !== notify)
+                        );
+                      }}
+                    >
+                      {notify.chat.isGroupChat
+                        ? `New message in ${notify.chat.chatName}`
+                        : `New message from ${getSender(
+                            user,
+                            notify.chat.users
+                          )}`}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </>
+            )}
           </Menu>
           <Menu>
             <MenuButton
