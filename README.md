@@ -15,29 +15,26 @@ Backend- Node.js,Express,Mongodb,socket.io
 <br>
 ![Screenshot 2023-10-28 183025](https://github.com/ankanmitra2002/Chat_Stream/assets/136356039/59695a0f-8e38-4af4-a5f0-1eb16863bbe0)
 
+### For starting the app 
+
+##Clone the repository
+```git
+git clone https://github.com/ankanmitra2002/Chat_Stream.git
+```
 ## For installing dependencies
 ```bash
   npm install
 ```
-
 ```bash
   cd frontend/
   npm install
 ```
-
-## For starting the app 
-
-Clone the repository
-```git
-git clone 
-```
-
-### Server Side
+## Backend server Side
 ```javascript
 npm start
 ```
 
-### Client Side 
+## Frontend Client Side 
 ```javascript
 cd frontend
 npm start
