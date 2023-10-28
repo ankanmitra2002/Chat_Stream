@@ -16,7 +16,6 @@ https://youtu.be/R0jbiRro4bA?si=G6qKB0zdAaH-xajV
 <br>
 ![Screenshot 2023-10-28 182825](https://github.com/ankanmitra2002/Chat_Stream/assets/136356039/ec8faec4-771c-4e8a-a587-72ddbbd53e73)
 <br>
-![Screenshot 2023-10-28 183025](https://github.com/ankanmitra2002/Chat_Stream/assets/136356039/59695a0f-8e38-4af4-a5f0-1eb16863bbe0)
 
 ### For starting the app 
 
