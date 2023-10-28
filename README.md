@@ -1,9 +1,11 @@
 ## Chat_Stream
 Chat-Stream is a MERN Stack Real Time Chat Application Project with features user authentication,authorization, goup chat,one to one chat,real time notifications and real time messages
 # Tech Stacks Used-
-Frontend- React, Chakra Ui
+*Frontend* - React, Chakra Ui
 <br>
-Backend- Node.js,Express,Mongodb,socket.io
+*Backend* - Node.js,Express,Mongodb,socket.io
+## Video Link
+https://youtu.be/R0jbiRro4bA?si=G6qKB0zdAaH-xajV
 #Screenshots of the application
 ![Screenshot 2023-10-28 183101](https://github.com/ankanmitra2002/Chat_Stream/assets/136356039/a1c07270-44f0-4520-b2d7-766349086164)
 <br>
