@@ -8,31 +8,30 @@ import chatRoutes from "./routes/chatRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import { Server } from "socket.io";
-
+import path from "path";
 const webapp = express();
 dotenv.config();
 connectDB();
-// console.log(process.env);
-webapp.use(express.json()); // Accepts the json data from frontend
-webapp.get("/", (req, res) => {
-  res.send("Our API is running fine");
-});
+
+webapp.use(express.json());
 webapp.use("/api/user", userRoutes);
 webapp.use("/api/chat", chatRoutes);
 webapp.use("/api/message", messageRoutes);
+// --------- Deployment ----------
+const __dirname1 = path.resolve();
+if (process.env.NODE_ENV === "production") {
+  webapp.use(express.static(path.join(__dirname1, "frontend/build")));
+  webapp.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
+  });
+} else {
+  webapp.get("/", (req, res) => {
+    res.send("Our API is running fine");
+  });
+}
+// --------- Deployment ----------
 webapp.use(notFound);
 webapp.use(errorHandler);
-// webapp.get("/api/chat", (req, res) => {
-//   res.send(chats);
-// });
-// webapp.get("/api/chat/:id", (req, res) => {
-//   // console.log(req.params.id);
-//   const singleChat = chats.find((serach) => {
-//     return serach._id === req.params.id;
-//   });
-//   console.log(singleChat);
-//   res.send(singleChat);
-// });
 const port = process.env.PORT || 1000;
 const server = webapp.listen(
   port,
@@ -49,7 +48,6 @@ io.on("connection", (socket) => {
   console.log("Connected to socket.io");
   socket.on("setup", (userData) => {
     socket.join(userData._id);
-    // console.log(userData._id);
     socket.emit("connected");
   });
 
