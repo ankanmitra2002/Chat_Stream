@@ -67,20 +67,12 @@ const Login = () => {
         position: "bottom",
       });
 
-      // // setLoading(false);
-      // // history.push("/chat");
-      // setTimeout(() => {
-      //   setLoading(false);
-      //   history.push("/chat");
-      // }, 1000); // 1000ms delay (1 second) as an example
       setTimeout(() => {
         setLoading(false);
-        // Refresh the page
 
-        // Redirect to the chat page
         setShouldRefresh(true);
         history.push("/chat");
-      }, 1000); // 1000ms delay (1 second) as an example
+      }, 1000);
     } catch (error) {
       toast({
         title: "Error Occurred!",
@@ -116,13 +108,12 @@ const Login = () => {
           <InputRightElement>
             <IconButton
               aria-label={show ? "Hide Password" : "Show Password"}
-              icon={show ? <ViewOffIcon /> : <ViewIcon />} // Use eye icons
-              // size="sm"
+              icon={show ? <ViewOffIcon /> : <ViewIcon />}
               onClick={handleClick}
               bg="transparent"
               _hover={{
-                boxShadow: "none", // Remove boxShadow on hover
-                transition: "none", // Remove transition on hover
+                boxShadow: "none",
+                transition: "none",
               }}
             />
           </InputRightElement>
@@ -132,11 +123,9 @@ const Login = () => {
         mb="2"
         bg="#45458e"
         color="white"
-        // marginLeft="auto" // Add marginLeft to center the button
-        // marginRight="auto" // Add marginRight to center the button
         _hover={{
-          boxShadow: "none", // Remove boxShadow on hover
-          transition: "none", // Remove transition on hover
+          boxShadow: "none",
+          transition: "none",
         }}
         onClick={submitHandler}
         isLoading={loading}
@@ -144,24 +133,6 @@ const Login = () => {
         width={isSmallScreen ? "85%" : "70%"}
       >
         Login
-      </Button>
-      <Button
-        bg="#6a1740"
-        color="white"
-        // marginLeft={isSmallScreen ? "0" : "auto"} // Add marginLeft to center the button
-        // marginRight={isSmallScreen ? "0" : "auto"} // Add marginRight to center the button
-        _hover={{
-          boxShadow: "none", // Remove boxShadow on hover
-          transition: "none", // Remove transition on hover
-        }}
-        onClick={() => {
-          setEmail("guest@example.com");
-          setPassword("password");
-        }}
-        fontSize={isSmallScreen ? "15px" : "18px"}
-        width={isSmallScreen ? "85%" : "70%"}
-      >
-        Guest User Credentials
       </Button>
     </VStack>
   );

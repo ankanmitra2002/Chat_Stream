@@ -19,7 +19,7 @@ import { useHistory } from "react-router-dom";
 const Signup = () => {
   const [isSmallScreen] = useMediaQuery("(max-width: 400px)");
   const [show, setShow] = useState(false);
-  const [name, setName] = useState();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState();
   const [confirmpassword, setConfirmpassword] = useState();
   const [password, setPassword] = useState();
@@ -186,13 +186,12 @@ const Signup = () => {
         position: "bottom",
       });
       localStorage.setItem("userInfo", JSON.stringify(data));
-      // setLoading(false);
-      // history.push("/chat");
+
       setTimeout(() => {
         setLoading(false);
         setShouldRefresh(true);
         history.push("/chat");
-      }, 1000); // 1000ms delay (1 second) as an example
+      }, 1000);
     } catch (error) {
       toast({
         title: "Some Error Occurred!",
@@ -240,13 +239,12 @@ const Signup = () => {
           <InputRightElement>
             <IconButton
               aria-label={show ? "Hide Password" : "Show Password"}
-              icon={show ? <ViewOffIcon /> : <ViewIcon />} // Use eye icons
-              // size="sm"
+              icon={show ? <ViewOffIcon /> : <ViewIcon />}
               onClick={handleClick}
               bg="transparent"
               _hover={{
-                boxShadow: "none", // Remove boxShadow on hover
-                transition: "none", // Remove transition on hover
+                boxShadow: "none",
+                transition: "none",
               }}
             />
           </InputRightElement>
@@ -263,32 +261,18 @@ const Signup = () => {
           <InputRightElement>
             <IconButton
               aria-label={show ? "Hide Password" : "Show Password"}
-              icon={show ? <ViewOffIcon /> : <ViewIcon />} // Use eye icons
-              // size="sm"
+              icon={show ? <ViewOffIcon /> : <ViewIcon />}
               onClick={handleClick}
               bg="transparent"
               _hover={{
-                boxShadow: "none", // Remove boxShadow on hover
-                transition: "none", // Remove transition on hover
+                boxShadow: "none",
+                transition: "none",
               }}
             />
           </InputRightElement>
         </InputGroup>
       </FormControl>
-      {/* <FormControl id="pic" mb="3" borderColor="black">
-        <FormLabel>Upload Your Profile Photo</FormLabel>
-        <Input
-          type="file"
-          accept="image/*"
-          // h="100%"
-          p="2"
-          pl="0"
-          pt="0"
-          pb="2"
-          // pr="0"
-          onChange={(event) => picUpload(event.target.value[0])}
-        />
-      </FormControl> */}
+
       <FormLabel alignSelf="start">Upload Your Profile Photo</FormLabel>
       <FormControl
         id="pic"
@@ -309,7 +293,6 @@ const Signup = () => {
 
           <HStack spacing="2" alignItems="center">
             <AttachmentIcon />
-            {/* <FormLabel>Upload Your Profile Photo</FormLabel> */}
           </HStack>
         </label>
         {selectedFileName && (
@@ -318,17 +301,15 @@ const Signup = () => {
           </Text>
         )}
       </FormControl>
-      {/* <Text fontSize="md" color="black" alignSelf="start">
-        Upload Your Profile Photo
-      </Text> */}
+
       <Button
         bg="black"
         color="white"
-        marginLeft="auto" // Add marginLeft to center the button
-        marginRight="auto" // Add marginRight to center the button
+        marginLeft="auto"
+        marginRight="auto"
         _hover={{
-          boxShadow: "none", // Remove boxShadow on hover
-          transition: "none", // Remove transition on hover
+          boxShadow: "none",
+          transition: "none",
         }}
         onClick={submitHandler}
         isLoading={loading}
