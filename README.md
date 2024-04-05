@@ -21,12 +21,13 @@ https://youtu.be/R0jbiRro4bA?si=G6qKB0zdAaH-xajV
 
 ### For starting the app 
 
-##Clone the repository
+## Clone the repository
 ```git
 git clone https://github.com/ankanmitra2002/Chat_Stream.git
 ```
 ## For installing dependencies
 ```bash
+  cd backend/
   npm install
 ```
 ```bash
