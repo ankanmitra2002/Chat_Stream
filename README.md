@@ -1,5 +1,7 @@
 ### Chat_Stream
 Chat-Stream is a MERN Stack Real Time Chat Application Project with features user authentication,authorization, goup chat,one to one chat,real time notifications and real time messages
+## Website Live at- 
+https://chat-stream-6uay.onrender.com/
 # Tech Stacks Used-
 *Frontend* - React, Chakra Ui
 <br>
@@ -19,12 +21,13 @@ https://youtu.be/R0jbiRro4bA?si=G6qKB0zdAaH-xajV
 
 ### For starting the app 
 
-##Clone the repository
+## Clone the repository
 ```git
 git clone https://github.com/ankanmitra2002/Chat_Stream.git
 ```
 ## For installing dependencies
 ```bash
+  cd backend/
   npm install
 ```
 ```bash
