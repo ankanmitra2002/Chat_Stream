@@ -22,7 +22,7 @@ import UpdateGroupChatModal from "./UpdateGroupChatModal.js";
 import { ChatState } from "../context/chatProvider.js";
 import ScrollableChat from "./ScrollableChat";
 import SpeechToText from "./SpeectToText";
-const ENDPOINT = "http://localhost:1000";
+const ENDPOINT = "https://chat-stream-6uay.onrender.com";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -32,7 +32,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
+
   const toast = useToast();
+
   function countNewlines(text) {
     const newlineRegex = /\n/g;
     const matches = text.match(newlineRegex);
@@ -59,7 +61,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         `/api/message/${selectedChat._id}`,
         config
       );
-      // console.log(messages);
       setMessages(data);
       setLoading(false);
 
@@ -120,13 +121,18 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     socket.on("connected", () => setSocketConnected(true));
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
-  }, []);
+    return () => {
+      socket.off("typing");
+      socket.off("stop typing");
+    };
+  }, [selectedChat, socketConnected]);
 
   useEffect(() => {
+    if (!selectedChat) return;
+    setNewMessage("");
     fetchMessages();
-
     selectedChatCompare = selectedChat;
-  }, [selectedChat]);
+  }, [selectedChat, user]);
   console.log(notification, "--------------");
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved) => {
@@ -149,13 +155,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     setNewMessage(e.target.value);
 
     if (!socketConnected) return;
-
-    if (!typing) {
+    const roomId = selectedChat?._id;
+    if (!typing && roomId) {
       setTyping(true);
       socket.emit("typing", selectedChat._id);
     }
     let lastTypingTime = new Date().getTime();
-    var timerLength = 3000;
+    var timerLength = 1000;
     setTimeout(() => {
       var timeNow = new Date().getTime();
       var timeDiff = timeNow - lastTypingTime;

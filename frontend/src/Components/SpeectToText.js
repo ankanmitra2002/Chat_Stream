@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useCallback } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -9,7 +9,7 @@ import SpeechRecognition, {
 const SpeechToText = ({ onSpeechResult }) => {
   const { listening, transcript, resetTranscript } = useSpeechRecognition();
 
-  const toggleListening = () => {
+  const toggleListening = useCallback(() => {
     if (listening) {
       SpeechRecognition.stopListening();
       onSpeechResult(transcript);
@@ -17,7 +17,7 @@ const SpeechToText = ({ onSpeechResult }) => {
     } else {
       SpeechRecognition.startListening();
     }
-  };
+  }, [listening, onSpeechResult, resetTranscript, transcript]);
 
   return (
     <div>

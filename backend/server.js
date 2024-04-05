@@ -40,7 +40,7 @@ const server = webapp.listen(
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
   },
 });
 
@@ -73,5 +73,10 @@ io.on("connection", (socket) => {
   socket.off("setup", () => {
     console.log("User is disconnected");
     socket.leave(userData._id);
+  });
+  socket.on("disconnect", () => {
+    console.log("Socket disconnected");
+    // Clean up resources when socket disconnects
+    socket.leaveAll(); // Leave all rooms
   });
 });

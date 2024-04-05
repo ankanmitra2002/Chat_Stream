@@ -7,18 +7,8 @@ import MyChats from "../Components/MyChats.js";
 const ChatPage = () => {
   const { user } = ChatState();
   console.log(user);
-  // const [loading, setLoading] = useState(true);
   const [fetchAgain, setFetchAgain] = useState(false);
-  useEffect(() => {
-    // Check if user data is available
-    // if (user) {
-    //   setLoading(false);
-    //   console.log("1"); // Data is available, set loading to false
-    // }
-    //  else {
-    //   window.location.reload();
-    // }
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   return (
     <div style={{ width: "100%", overflowY: "hidden", height: "100vh" }}>
@@ -28,7 +18,6 @@ const ChatPage = () => {
         justifyContent={"space-between"}
         width={"100%"}
         height={"92%"}
-        // bg={"black"}
         p="10px"
       >
         {user && <MyChats fetchAgain={fetchAgain}></MyChats>}
