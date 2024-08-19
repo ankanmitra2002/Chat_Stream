@@ -25,9 +25,7 @@ const Login = () => {
   const [shouldRefresh, setShouldRefresh] = useState(false);
   useEffect(() => {
     if (shouldRefresh) {
-      // Refresh the page
       window.location.reload();
-      // Set the state to prevent further refreshes
       setShouldRefresh(false);
     }
   }, [shouldRefresh]);
@@ -69,7 +67,6 @@ const Login = () => {
 
       setTimeout(() => {
         setLoading(false);
-
         setShouldRefresh(true);
         history.push("/chat");
       }, 1000);

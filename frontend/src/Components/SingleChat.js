@@ -22,7 +22,8 @@ import UpdateGroupChatModal from "./UpdateGroupChatModal.js";
 import { ChatState } from "../context/chatProvider.js";
 import ScrollableChat from "./ScrollableChat";
 import SpeechToText from "./SpeectToText";
-const ENDPOINT = "https://chat-stream-6uay.onrender.com";
+// const ENDPOINT = "https://chat-stream-6uay.onrender.com";
+const ENDPOINT = "http://127.0.0.1:1000/";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -137,7 +138,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved) => {
       if (
-        !selectedChatCompare || // if chat is not selected or doesn't match current chat
+        !selectedChatCompare ||
         selectedChatCompare._id !== newMessageRecieved.chat._id
       ) {
         if (!notification.includes(newMessageRecieved)) {

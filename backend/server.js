@@ -1,6 +1,6 @@
-import express from "express";
 import dotenv from "dotenv";
-import chats from "./data/data.js";
+import express from "express";
+import "./config/cronjobFile.js";
 import connectDB from "./config/db.js";
 import colors from "colors";
 import userRoutes from "./routes/userRoutes.js";
@@ -9,8 +9,9 @@ import messageRoutes from "./routes/messageRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import { Server } from "socket.io";
 import path from "path";
-const webapp = express();
+
 dotenv.config();
+const webapp = express();
 connectDB();
 
 webapp.use(express.json());

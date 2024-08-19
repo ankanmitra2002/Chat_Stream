@@ -14,11 +14,18 @@ import {
   Image,
   useMediaQuery,
 } from "@chakra-ui/react";
+import { useHistory } from "react-router-dom";
 
 const ProfileModal = ({ user, children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSmallScreen] = useMediaQuery("(max-width: 576px)");
   const [isVerySmallScreen] = useMediaQuery("(max-width: 405px)");
+  const history = useHistory();
+
+  const handleUpdateProfile = () => {
+    onClose();
+    history.push("/updateProfile");
+  };
   return (
     <>
       {children ? (
@@ -57,19 +64,27 @@ const ProfileModal = ({ user, children }) => {
               boxSize={isSmallScreen ? "70px" : "150px"}
               src={user.photo}
               alt={user.name}
+              border="1px solid black"
             />
             <Text
               fontSize={
                 isSmallScreen ? (isVerySmallScreen ? "12px" : "15px") : "18px"
               }
               fontWeight="bold"
-              // fontSize={{ base: "28px", md: "30px" }}
-              // fontFamily="Work sans"
             >
               Email: {user.email}
             </Text>
           </ModalBody>
           <ModalFooter>
+            <Button
+              onClick={handleUpdateProfile}
+              fontSize={isSmallScreen ? "10px" : "20px"}
+              width={isSmallScreen ? "10%" : "20%"}
+              mr={4}
+              colorScheme="green"
+            >
+              Update
+            </Button>
             <Button
               onClick={onClose}
               fontSize={isSmallScreen ? "10px" : "20px"}

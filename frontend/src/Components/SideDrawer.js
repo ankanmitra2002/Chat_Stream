@@ -58,25 +58,10 @@ const SideDrawer = () => {
     localStorage.removeItem("userInfo");
     history.push("/");
   };
-  // const handleMenuItemClick = (notify) => {
-  //   console.log("Clicked on notification:", notify);
-  //   setSelectedChat(notify.chat);
-  //   setNotification(notification.filter((n) => n !== notify));
-  // };
   const handleSearch = async (search) => {
     if (!search) {
-      // toast({
-      //   title: "Please Enter something in search",
-      //   status: "warning",
-      //   duration: 2000,
-      //   isClosable: true,
-      //   position: "top-left",
-      // });
-      // return;
-      if (!search) {
-        setSearchResult([]);
-        return;
-      }
+      setSearchResult([]);
+      return;
     }
 
     try {
@@ -131,38 +116,7 @@ const SideDrawer = () => {
       });
     }
   };
-  // const fetchSearchResults = async (input) => {
-  //   if (!input) {
-  //     setSearchResult([]);
-  //     return;
-  //   }
 
-  //   try {
-  //     setLoading(true);
-
-  //     const config = {
-  //       headers: {
-  //         Authorization: `Bearer ${user.token}`,
-  //       },
-  //     };
-
-  //     const { data } = await axios.get(`/api/user?search=${input}`, config);
-
-  //     setSearchResult(data);
-  //     setLoading(false);
-  //   } catch (error) {
-  //     toast({
-  //       title: "Error Occurred!",
-  //       description: "Failed to Load the Search Results",
-  //       status: "error",
-  //       duration: 2000,
-  //       isClosable: true,
-  //       position: "bottom-left",
-  //     });
-  //   }
-  // };
-
-  // Update the search results as you type in the input field
   useEffect(() => {
     handleSearch(search);
   }, [search]);
@@ -182,7 +136,6 @@ const SideDrawer = () => {
         borderWidth={"2px"}
         mt={2}
         boxShadow=" 0 0 5px #020161f1"
-        // borderRadius={"md"}
       >
         <Box display="flex">
           <Tooltip label="Search Users" hasArrow placement="bottom-end">
@@ -190,20 +143,17 @@ const SideDrawer = () => {
               variant={"ghost"}
               borderRadius={"2xl"}
               width={"100%"}
-              display="flex" // Make the button's content flex
-              alignItems="center" // Align content vertically in the button
-              justifyContent="flex-start" // Align content to the left within the button
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-start"
               borderLeftRadius={0}
               bg={"#020161f1"}
-              // boxShadow="0 0 10px #020161f1"
               onClick={onOpen}
             >
               <FontAwesomeIcon
                 icon={faSearch}
                 style={{
                   color: "white",
-                  // padding: "8px",
-                  // borderRadius: "50%",
                 }}
               />
               <Text
@@ -222,8 +172,6 @@ const SideDrawer = () => {
             isSmallScreen ? (isVerySmallScreen ? "10px" : "14px") : "25px"
           }
           fontWeight={"bold"}
-          // bg={"blue"}
-          // flex="0.6"
         >
           Chat-Stream
         </Text>

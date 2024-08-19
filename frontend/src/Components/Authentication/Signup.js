@@ -31,9 +31,7 @@ const Signup = () => {
   const [shouldRefresh, setShouldRefresh] = useState(false);
   useEffect(() => {
     if (shouldRefresh) {
-      // Refresh the page
       window.location.reload();
-      // Set the state to prevent further refreshes
       setShouldRefresh(false);
     }
   }, [shouldRefresh]);
@@ -47,7 +45,8 @@ const Signup = () => {
     return password.length >= minLength;
   };
   const validatePasswordCharacter = (password) => {
-    const specialCharacterRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/;
+    const specialCharacterRegex =
+      /^(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-])(?!.*\s)/;
     return specialCharacterRegex.test(password);
   };
   const picUpload = (photo) => {
@@ -136,7 +135,8 @@ const Signup = () => {
     }
     if (!validatePasswordCharacter(password)) {
       toast({
-        title: "Password Should Contain Atleast One Special Character",
+        title:
+          "Password Should Contain Atleast One Special Character and No Whitespace Character",
         status: "warning",
         duration: 2000,
         isClosable: true,
@@ -179,24 +179,25 @@ const Signup = () => {
         config
       );
       toast({
-        title: "Registration is successful",
+        title: "OTP has been sent to the mail",
         status: "success",
-        duration: 3000,
+        duration: 2000,
         isClosable: true,
         position: "bottom",
       });
-      localStorage.setItem("userInfo", JSON.stringify(data));
-
-      setTimeout(() => {
-        setLoading(false);
-        setShouldRefresh(true);
-        history.push("/chat");
-      }, 1000);
+      localStorage.setItem("tempuserInfo", JSON.stringify(data));
+      // localStorage.setItem("userInfo", JSON.stringify(data));
+      history.push("/otp-verification", { email });
+      // setTimeout(() => {
+      //   setLoading(false);
+      //   setShouldRefresh(true);
+      //   history.push("/chat");
+      // }, 1000);
     } catch (error) {
       toast({
         title: "Some Error Occurred!",
         status: "error",
-        duration: 3000,
+        duration: 2000,
         isClosable: true,
         position: "bottom",
       });

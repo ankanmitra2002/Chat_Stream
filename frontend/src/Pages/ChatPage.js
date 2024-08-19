@@ -6,9 +6,7 @@ import ChatBox from "../Components/ChatBox.js";
 import MyChats from "../Components/MyChats.js";
 const ChatPage = () => {
   const { user } = ChatState();
-  console.log(user);
   const [fetchAgain, setFetchAgain] = useState(false);
-  useEffect(() => {}, [user]);
 
   return (
     <div style={{ width: "100%", overflowY: "hidden", height: "100vh" }}>

@@ -1,14 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-  Box,
-  Container,
-  Text,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-} from "@chakra-ui/react";
+import { TabList, TabPanels, Tab, TabPanel, Link, Box } from "@chakra-ui/react";
+import AuthLayout from "../Components/Authentication/AuthLayout";
 import Login from "../Components/Authentication/Login";
 import Signup from "../Components/Authentication/Signup";
 import { useHistory } from "react-router-dom";
@@ -26,8 +18,8 @@ const HomePage = () => {
           mouseControls: true,
           touchControls: true,
           gyroControls: false,
-          minHeight: 600.0,
-          minWidth: 600.0,
+          minHeight: 300.0,
+          minWidth: 300.0,
           scale: 1.0,
           scaleMobile: 1.0,
           color: 0x11a,
@@ -46,60 +38,35 @@ const HomePage = () => {
   }, [history]);
 
   return (
-    <div style={{ width: "100%", height: "900px", margin: 0 }} ref={myRef}>
-      <Container
-        maxW="2xl"
-        centerContent
-        style={{ width: "100%", height: "100%" }}
-      >
-        <Box
-          d="flex"
-          justifyContent="center"
-          p="4"
-          bg="white"
-          w="100%"
-          m="10px 0 10px 0"
-          borderRadius="10px"
-          borderWidth="1px"
-          boxShadow="outline"
-        >
-          <Text
-            fontFamily="Libre Baskerville"
-            fontSize="2xl"
-            textAlign="center"
-          >
-            Chat-Stream
-          </Text>
-        </Box>
-        <Box
-          width="100%"
-          bg="white"
-          p="4"
-          borderRadius="8px"
-          borderWidth="1px"
-          borderColor="black"
-          boxShadow="outline"
-        >
-          <Tabs variant="soft-rounded" colorScheme="blue">
-            <TabList mb="10px">
-              <Tab width="50%" fontFamily="Libre Baskerville">
-                Login
-              </Tab>
-              <Tab width="50%" fontFamily="Libre Baskerville">
-                Sign Up
-              </Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                <Login />
-              </TabPanel>
-              <TabPanel>
-                <Signup />
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </Box>
-      </Container>
+    <div style={{ width: "100%", height: "100vh", margin: 0 }} ref={myRef}>
+      <AuthLayout>
+        <TabList mb="10px">
+          <Tab width="50%" fontFamily="Libre Baskerville">
+            Login
+          </Tab>
+          <Tab width="50%" fontFamily="Libre Baskerville">
+            Sign Up
+          </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <Login />
+            <Box width="100%" textAlign="center" mt="4">
+              <Link
+                href="/forgot-password"
+                color="blue.800"
+                fontSize={19}
+                _hover={{ textDecoration: "underline" }}
+              >
+                Forgot Password?
+              </Link>
+            </Box>
+          </TabPanel>
+          <TabPanel>
+            <Signup />
+          </TabPanel>
+        </TabPanels>
+      </AuthLayout>
     </div>
   );
 };
